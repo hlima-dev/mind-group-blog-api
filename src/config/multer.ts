@@ -5,7 +5,7 @@ import { Request } from 'express';
 
 const storage = new CloudinaryStorage({
   cloudinary,
-  params: async (_req, file) => ({
+  params: async (_req: Request, file: Express.Multer.File) => ({
     folder: 'mind-group-blog',
     format: file.mimetype.split('/')[1],
     public_id: `${Date.now()}-${file.originalname}`,
