@@ -14,15 +14,18 @@ export class ArticleController {
         throw new AppError('title, summary, content e category são obrigatórios.');
       }
 
-      // Salva apenas o nome do arquivo — a URL pública é montada pelo frontend
-      const bannerImage = req.file ? req.file.filename : undefined;
+      // Agora salva a URL da imagem na Cloudinary
+      const bannerImage = req.file ? (req.file as any).path : undefined;
 
       const parsedTags = tags
         ? (Array.isArray(tags) ? tags : JSON.parse(tags))
         : [];
 
       const article = await articleService.create({
-        title, summary, content, category,
+        title,
+        summary,
+        content,
+        category,
         tags: parsedTags,
         bannerImage,
         authorId,
@@ -57,15 +60,18 @@ export class ArticleController {
       const authorId = req.user!.userId;
       const { title, summary, content, category, tags } = req.body;
 
-      // Salva apenas o nome do arquivo — a URL pública é montada pelo frontend
-      const bannerImage = req.file ? req.file.filename : undefined;
+      // Agora salva a URL da imagem na Cloudinary
+      const bannerImage = req.file ? (req.file as any).path : undefined;
 
       const parsedTags = tags
         ? (Array.isArray(tags) ? tags : JSON.parse(tags))
         : undefined;
 
       const article = await articleService.update(req.params.id, authorId, {
-        title, summary, content, category,
+        title,
+        summary,
+        content,
+        category,
         tags: parsedTags,
         bannerImage,
       });
